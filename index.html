@@ -13,20 +13,22 @@
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-   <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-          
-          // Mengarahkan OneSignal untuk gabung dengan file sw.js PWA Anda
-          serviceWorkerPath: "sw.js", 
-          serviceWorkerParam: { scope: "/TPQ/" },
-          
-          notifyButton: {
-            enable: false,
-          },
-        });
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
+      serviceWorkerPath: "sw.js", 
+      serviceWorkerParam: { scope: "/TPQ/" },
+      notifyButton: {
+        enable: false,
+      },
+    });
+
+    // === KODE TAMBAHAN UNTUK MEMAKSA POP-UP MUNCUL ===
+    OneSignal.Slidedown.promptPush(); 
+  });
+</script>
         
         // Paksa munculkan pop-up izin jika belum diizinkan
         if (!OneSignal.Notifications.permission) {

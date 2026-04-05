@@ -12,21 +12,21 @@
     <link rel="icon" type="image/png" sizes="512x512" href="./Logo%20512.png">
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
+          
+          // KUNCI RAHASIA UNTUK GITHUB PAGES (SUB-FOLDER)
+          serviceWorkerParam: { scope: "/TPQ/" },
+          serviceWorkerPath: "TPQ/OneSignalSDKWorker.js",
+          
+          notifyButton: {
+            enable: false,
+          },
         });
-        
-        // Cek status izin di konsol browser
-        console.log("Status Izin:", OneSignal.Notifications.permission);
-        
-        // Paksa minta izin
-        if (!OneSignal.Notifications.permission) {
-          OneSignal.Notifications.requestPermission();
-        }
       });
     </script>
     <style>

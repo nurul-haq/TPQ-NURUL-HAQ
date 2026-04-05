@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
+   <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
@@ -33,8 +33,22 @@
            OneSignal.Notifications.requestPermission();
         }
       });
-    </script>
 
+      // Menerima sinyal dari dalam Iframe (Google Apps Script)
+      window.addEventListener('message', function(event) {
+          if (event.data && event.data.tipe === "LOGIN_SUKSES") {
+              console.log("Sinyal Login Diterima! Jabatan: ", event.data.jabatan);
+              
+              // Pasang Tag OneSignal dengan sangat aman (Anti-Error)
+              window.OneSignalDeferred = window.OneSignalDeferred || [];
+              OneSignalDeferred.push(function(OneSignal) {
+                  OneSignal.User.addTag("jabatan", event.data.jabatan);
+                  console.log("Tag Jabatan berhasil dipasang: " + event.data.jabatan);
+              });
+          }
+      });
+        
+    </script>
     <style>
         body, html {
             margin: 0;
@@ -135,7 +149,10 @@
     </style>
 </head>
 <body>
-
+    <div id="updateToast" style="display:none; position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: white; padding: 10px 20px; border-radius: 50px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); align-items: center; gap: 15px; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; animation: slideUp 0.5s ease-out;">
+    <span><i class="fas fa-gift text-warning me-2"></i> Versi Baru Tersedia!</span>
+    <button id="btnUpdateApp" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(16,185,129,0.3);">Perbarui</button>
+</div>
     <iframe src="https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec" allow="camera; microphone; fullscreen"></iframe>
 
     <div id="installBanner">
@@ -151,14 +168,41 @@
     </div>
 
     <script>
-      // 1. Daftarkan Service Worker (Sekarang file sw.js melayani PWA & OneSignal)
+      // 1. Daftarkan Service Worker dengan Sistem Update Otomatis
+      let newWorker;
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
-            .then((reg) => console.log('Service Worker berhasil didaftarkan!', reg.scope))
-            .catch((err) => console.log('Service Worker gagal:', err));
+          navigator.serviceWorker.register('./sw.js').then(reg => {
+            
+            // Cek jika ada versi baru di GitHub
+            reg.addEventListener('updatefound', () => {
+              newWorker = reg.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Jika ada versi baru, munculkan tombol Update
+                  document.getElementById('updateToast').style.display = 'flex';
+                }
+              });
+            });
+
+          }).catch(err => console.log('Service Worker gagal:', err));
+
+          // Saat tombol update ditekan, paksa aplikasi memuat ulang dengan versi baru
+          let refreshing;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
+            window.location.reload();
+          });
         });
       }
+
+      // Perintah untuk tombol perbarui di layar
+      document.getElementById('btnUpdateApp').addEventListener('click', () => {
+        if (newWorker) {
+          newWorker.postMessage('SKIP_WAITING'); // Suruh sw.js pindah ke versi baru
+        }
+      });
 
       // 2. Logika Banner Custom agar selalu muncul jika belum diinstal
       let deferredPrompt;

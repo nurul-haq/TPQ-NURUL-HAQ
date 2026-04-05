@@ -18,10 +18,11 @@
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-          notifyButton: {
-            enable: false, // Disembunyikan agar tidak ada ikon lonceng mengganggu di layar
-          },
+          allowLocalhostAsSecureOrigin: true,
         });
+        
+        // Memaksa munculkan permintaan izin jika belum di-klik
+        OneSignal.Notifications.requestPermission();
       });
     </script>
     <style>

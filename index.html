@@ -8,9 +8,9 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#009688">
     
-    <link rel="icon" type="image/png" sizes="192x192" href="Logo%20192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="Logo%20512.png">
-    <link rel="apple-touch-icon" href="Logo%20192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./Logo%20192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./Logo%20512.png">
+    <link rel="apple-touch-icon" href="./Logo%20192.png">
 
     <style>
         body, html {
@@ -18,8 +18,9 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Mencegah scrollbar ganda antara iframe dan body */
-            background-color: #009688; /* Warna saat iframe sedang loading */
+            overflow: hidden;
+            background-color: #009688;
+            font-family: sans-serif;
         }
         iframe {
             width: 100%;
@@ -27,20 +28,156 @@
             border: none;
             display: block;
         }
+
+        /* Desain Banner Install Custom */
+        #installBanner {
+            display: none; /* Disembunyikan dulu, akan muncul pakai JS jika belum diinstal */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            z-index: 9999;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-sizing: border-box;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .banner-kiri {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .banner-kiri img {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .banner-teks h6 {
+            margin: 0 0 2px 0;
+            font-size: 1rem;
+            color: #064e3b;
+            font-weight: 700;
+        }
+
+        .banner-teks small {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        #btnInstall {
+            background: #009688;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
+        }
+
+        /* Tombol silang untuk menutup banner sementara */
+        #btnTutupBanner {
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
 
     <iframe src="https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec" allow="camera; microphone; fullscreen"></iframe>
 
+    <div id="installBanner">
+        <button id="btnTutupBanner" onclick="document.getElementById('installBanner').style.display='none'">×</button>
+        <div class="banner-kiri">
+            <img src="./Logo%20192.png" alt="Logo TPQ">
+            <div class="banner-teks">
+                <h6>TPQ Nurul Haq</h6>
+                <small>Install aplikasi untuk akses cepat</small>
+            </div>
+        </div>
+        <button id="btnInstall">Install</button>
+    </div>
+
     <script>
+      // 1. Daftarkan Service Worker
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
             .then((reg) => console.log('Service Worker berhasil didaftarkan!', reg.scope))
-            .catch((err) => console.log('Service Worker gagal didaftarkan:', err));
+            .catch((err) => console.log('Service Worker gagal:', err));
         });
       }
+
+      // 2. Logika Banner Custom agar selalu muncul jika belum diinstal
+      let deferredPrompt;
+      const installBanner = document.getElementById('installBanner');
+      const btnInstall = document.getElementById('btnInstall');
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Blokir pop-up bawaan Chrome yang cuma muncul sekali itu
+        e.preventDefault();
+        
+        // Simpan event-nya ke dalam variabel untuk dipanggil nanti
+        deferredPrompt = e;
+        
+        // Munculkan Banner Custom buatan kita
+        installBanner.style.display = 'flex';
+      });
+
+      // 3. Saat wali santri klik tombol "Install" di banner kita
+      btnInstall.addEventListener('click', async () => {
+        // Sembunyikan banner kita
+        installBanner.style.display = 'none';
+        
+        // Panggil jendela install resmi dari Google Chrome
+        if(deferredPrompt) {
+            deferredPrompt.prompt();
+            
+            // Tunggu respon pengguna (apakah mereka klik Install atau Batal di jendela Chrome)
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Pengguna memilih: ${outcome}`);
+            
+            // Bersihkan memori
+            deferredPrompt = null;
+        }
+      });
+
+      // 4. Jika aplikasi sukses terinstal, pastikan banner kita disembunyikan selamanya
+      window.addEventListener('appinstalled', () => {
+        installBanner.style.display = 'none';
+        deferredPrompt = null;
+        console.log('Aplikasi TPQ berhasil diinstal di HP!');
+      });
     </script>
     
 </body>

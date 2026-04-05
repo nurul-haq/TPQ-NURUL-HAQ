@@ -13,44 +13,7 @@
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-      serviceWorkerPath: "sw.js", 
-      serviceWorkerParam: { scope: "/TPQ/" },
-      notifyButton: {
-        enable: false,
-      },
-    });
 
-    // === KODE TAMBAHAN UNTUK MEMAKSA POP-UP MUNCUL ===
-    OneSignal.Slidedown.promptPush(); 
-  });
-</script>
-        
-        // Paksa munculkan pop-up izin jika belum diizinkan
-        if (!OneSignal.Notifications.permission) {
-           OneSignal.Notifications.requestPermission();
-        }
-      });
-
-      // Menerima sinyal dari dalam Iframe (Google Apps Script)
-      window.addEventListener('message', function(event) {
-          if (event.data && event.data.tipe === "LOGIN_SUKSES") {
-              console.log("Sinyal Login Diterima! Jabatan: ", event.data.jabatan);
-              
-              // Pasang Tag OneSignal dengan sangat aman (Anti-Error)
-              window.OneSignalDeferred = window.OneSignalDeferred || [];
-              OneSignalDeferred.push(function(OneSignal) {
-                  OneSignal.User.addTag("jabatan", event.data.jabatan);
-                  console.log("Tag Jabatan berhasil dipasang: " + event.data.jabatan);
-              });
-          }
-      });
-        
-    </script>
     <style>
         body, html {
             margin: 0;
@@ -171,44 +134,41 @@
     </div>
 
     <script>
-     // ==========================================
-      // 1. INJEKSI DEEP LINKING KE GOOGLE SCRIPT
+      // ==========================================
+      // 1. INJEKSI KE GOOGLE SCRIPT & ANTI-CACHE
       // ==========================================
       const gasUrl = "https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec";
       const params = window.location.search; 
-      
-      // TAMBAHKAN KODE INI UNTUK MENGHANCURKAN CACHE
       const waktuSekarang = new Date().getTime(); 
       const finalUrl = gasUrl + (params ? params + "&" : "?") + "refresh=" + waktuSekarang;
       
       document.getElementById('appFrame').src = finalUrl;
 
       // ==========================================
-      // 2. PENANGANAN ONESIGNAL & PESAN IFRAME
+      // 2. SETTING ONESIGNAL & TANGKAP PESAN IFRAME
       // ==========================================
       window.OneSignalDeferred = window.OneSignalDeferred || [];
+      
+      // Inisialisasi OneSignal
       OneSignalDeferred.push(async function(OneSignal) {
-        
-        // Jeda 3 detik sebelum minta izin notifikasi agar tidak diblokir browser
-        setTimeout(() => {
-            if (OneSignal.Notifications && !OneSignal.Notifications.permission) {
-               OneSignal.Notifications.requestPermission();
-            }
-        }, 3000);
+        await OneSignal.init({
+          appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
+          serviceWorkerPath: "sw.js", 
+          serviceWorkerParam: { scope: "/TPQ/" },
+          notifyButton: { enable: false },
+        });
+
+        // Munculkan Pop-up Notifikasi setelah loading
+        OneSignal.Slidedown.promptPush(); 
       });
 
-      // Menerima sinyal dari dalam Iframe (Google Apps Script)
+      // Menerima Sinyal Login dari Iframe (Google Apps Script)
       window.addEventListener('message', function(event) {
-          // CEK KEAMANAN: Pastikan pesan benar-benar datang dari Google Script
-          if (event.origin !== "https://script.googleusercontent.com" && !event.origin.includes("google.com")) {
-              return; // Abaikan jika dari sumber tidak dikenal
-          }
-
+          // Abaikan pesan jika tidak berkaitan dengan LOGIN_SUKSES
           if (event.data && event.data.tipe === "LOGIN_SUKSES") {
               console.log("Sinyal Login Diterima! Jabatan: ", event.data.jabatan);
               
-              window.OneSignalDeferred = window.OneSignalDeferred || [];
-              OneSignalDeferred.push(function(OneSignal) {
+              window.OneSignalDeferred.push(function(OneSignal) {
                   OneSignal.User.addTag("jabatan", event.data.jabatan);
                   console.log("Tag Jabatan berhasil dipasang: " + event.data.jabatan);
               });
@@ -243,7 +203,6 @@
 
       document.getElementById('btnUpdateApp').addEventListener('click', () => {
         if (newWorker) {
-          // Format objek biasanya lebih aman untuk file sw.js standar
           newWorker.postMessage({action: 'skipWaiting'}); 
         }
       });

@@ -1,3 +1,4 @@
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 const CACHE_NAME = 'tpq-cache-v2';
 
 // 1. Daftar file cangkang yang akan disimpan permanen di HP (Cache)

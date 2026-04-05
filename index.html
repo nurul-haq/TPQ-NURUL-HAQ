@@ -18,13 +18,15 @@
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-          allowLocalhostAsSecureOrigin: true,
         });
         
-        // Memaksa munculkan kotak izin Chrome
-        setTimeout(() => {
+        // Cek status izin di konsol browser
+        console.log("Status Izin:", OneSignal.Notifications.permission);
+        
+        // Paksa minta izin
+        if (!OneSignal.Notifications.permission) {
           OneSignal.Notifications.requestPermission();
-        }, 2000); // Tunggu 2 detik agar halaman stabil
+        }
       });
     </script>
     <style>

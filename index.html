@@ -19,13 +19,10 @@
         await OneSignal.init({
           appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
           
-          // KUNCI RAHASIA UNTUK GITHUB PAGES (SUB-FOLDER)
+          // KODE YANG SUDAH DIKOREKSI (Perhatikan garis miring di awal)
           serviceWorkerParam: { scope: "/TPQ/" },
-          serviceWorkerPath: "TPQ/OneSignalSDKWorker.js",
+          serviceWorkerPath: "/TPQ/OneSignalSDKWorker.js",
           
-          notifyButton: {
-            enable: false,
-          },
         });
       });
     </script>

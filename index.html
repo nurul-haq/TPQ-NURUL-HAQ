@@ -12,20 +12,29 @@
     <link rel="icon" type="image/png" sizes="512x512" href="./Logo%20512.png">
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
-   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
           
-          // KODE YANG SUDAH DIKOREKSI (Perhatikan garis miring di awal)
+          // Mengarahkan OneSignal untuk gabung dengan file sw.js PWA Anda
+          serviceWorkerPath: "sw.js", 
           serviceWorkerParam: { scope: "/TPQ/" },
-          serviceWorkerPath: "/TPQ/OneSignalSDKWorker.js",
           
+          notifyButton: {
+            enable: false,
+          },
         });
+        
+        // Paksa munculkan pop-up izin jika belum diizinkan
+        if (!OneSignal.Notifications.permission) {
+           OneSignal.Notifications.requestPermission();
+        }
       });
     </script>
+
     <style>
         body, html {
             margin: 0;
@@ -45,7 +54,7 @@
 
         /* Desain Banner Install Custom */
         #installBanner {
-            display: none; /* Disembunyikan dulu, akan muncul pakai JS jika belum diinstal */
+            display: none; 
             position: fixed;
             bottom: 0;
             left: 0;
@@ -105,7 +114,6 @@
             box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
         }
 
-        /* Tombol silang untuk menutup banner sementara */
         #btnTutupBanner {
             position: absolute;
             top: -12px;
@@ -143,7 +151,7 @@
     </div>
 
     <script>
-      // 1. Daftarkan Service Worker
+      // 1. Daftarkan Service Worker (Sekarang file sw.js melayani PWA & OneSignal)
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
@@ -158,35 +166,23 @@
       const btnInstall = document.getElementById('btnInstall');
 
       window.addEventListener('beforeinstallprompt', (e) => {
-        // Blokir pop-up bawaan Chrome yang cuma muncul sekali itu
         e.preventDefault();
-        
-        // Simpan event-nya ke dalam variabel untuk dipanggil nanti
         deferredPrompt = e;
-        
-        // Munculkan Banner Custom buatan kita
         installBanner.style.display = 'flex';
       });
 
       // 3. Saat wali santri klik tombol "Install" di banner kita
       btnInstall.addEventListener('click', async () => {
-        // Sembunyikan banner kita
         installBanner.style.display = 'none';
-        
-        // Panggil jendela install resmi dari Google Chrome
         if(deferredPrompt) {
             deferredPrompt.prompt();
-            
-            // Tunggu respon pengguna (apakah mereka klik Install atau Batal di jendela Chrome)
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`Pengguna memilih: ${outcome}`);
-            
-            // Bersihkan memori
             deferredPrompt = null;
         }
       });
 
-      // 4. Jika aplikasi sukses terinstal, pastikan banner kita disembunyikan selamanya
+      // 4. Jika aplikasi sukses terinstal
       window.addEventListener('appinstalled', () => {
         installBanner.style.display = 'none';
         deferredPrompt = null;

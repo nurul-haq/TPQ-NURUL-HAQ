@@ -12,6 +12,18 @@
     <link rel="icon" type="image/png" sizes="512x512" href="./Logo%20512.png">
     <link rel="apple-touch-icon" href="./Logo%20192.png">
 
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
+          notifyButton: {
+            enable: false, // Disembunyikan agar tidak ada ikon lonceng mengganggu di layar
+          },
+        });
+      });
+    </script>
     <style>
         body, html {
             margin: 0;

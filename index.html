@@ -147,12 +147,6 @@
       // ==========================================
       // 1. INJEKSI KE GOOGLE SCRIPT & ANTI-CACHE
       // ==========================================
-      const gasUrl = "https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec";
-      const params = window.location.search; 
-      const waktuSekarang = new Date().getTime(); 
-      const finalUrl = gasUrl + (params ? params + "&" : "?") + "refresh=" + waktuSekarang;
-      
-      document.getElementById('appFrame').src = finalUrl;
 
       // ==========================================
       // 2. SETTING ONESIGNAL & TANGKAP PESAN IFRAME

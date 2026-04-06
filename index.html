@@ -21,56 +21,107 @@
             width: 100%; height: 100%; border: none; display: block;
         }
 
-        /* ==========================================
-           DESAIN BANNER INSTALL (Muncul dari bawah)
-           ========================================== */
-        #installBanner {
-            display: none; 
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #ffffff; padding: 15px 20px;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.15); z-index: 9999;
-            justify-content: space-between; align-items: center;
-            border-top-left-radius: 20px; border-top-right-radius: 20px;
-            box-sizing: border-box; animation: slideUp 0.5s ease-out;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        .banner-kiri { display: flex; align-items: center; gap: 12px; }
-        .banner-kiri img { width: 45px; height: 45px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .banner-teks h6 { margin: 0 0 2px 0; font-size: 1rem; color: #064e3b; font-weight: 700; }
-        .banner-teks small { margin: 0; font-size: 0.75rem; color: #64748b; }
-        
-        #btnInstall {
-            background: #009688; color: white; border: none; padding: 10px 20px;
-            border-radius: 50px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
-        }
-        #btnTutupBanner {
-            position: absolute; top: -12px; right: 15px;
-            background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0;
-            border-radius: 50%; width: 26px; height: 26px; font-size: 14px;
-            font-weight: bold; cursor: pointer; display: flex;
-            justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+       /* Desain Banner Pro - Floating Card */
+#installBanner {
+    display: none;
+    position: fixed;
+    bottom: 20px; /* Melayang, tidak menempel di bawah */
+    left: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); /* Efek kaca */
+    padding: 16px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    z-index: 10000;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(255,255,255,0.3);
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes bounceIn {
+    0% { transform: translateY(150%) scale(0.8); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.banner-kiri {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.banner-kiri img {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,150,136,0.2);
+}
+
+.banner-teks h6 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1a202c;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.banner-teks small {
+    color: #718096;
+    font-size: 0.85rem;
+}
+
+#btnInstall {
+    background: #009688;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btnInstall:active {
+    transform: scale(0.9);
+}
+
+#btnTutupBanner {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: #ff5f57;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
     </style>
 </head>
 <body>
     
     <iframe id="appFrame" allow="camera; microphone; fullscreen" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe>
 
-    <div id="installBanner">
-        <button id="btnTutupBanner" onclick="document.getElementById('installBanner').style.display='none'">×</button>
-        <div class="banner-kiri">
-            <img src="./Logo%20192.png" alt="Logo TPQ">
-            <div class="banner-teks">
-                <h6>TPQ Nurul Haq</h6>
-                <small>Install aplikasi untuk akses cepat</small>
-            </div>
+   <div id="installBanner">
+    <button id="btnTutupBanner" onclick="document.getElementById('installBanner').style.display='none'">✕</button>
+    <div class="banner-kiri">
+        <img src="./Logo%20192.png" alt="Logo TPQ">
+        <div class="banner-teks">
+            <h6>TPQ Nurul Haq</h6>
+            <small>Cepat • Ringan • Aman</small>
         </div>
-        <button id="btnInstall">Install</button>
     </div>
+    <button id="btnInstall">PASANG</button>
+</div>
 
     <script>
       // 1. Setting OneSignal

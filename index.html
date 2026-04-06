@@ -226,7 +226,8 @@
     </div>
     
     <script>
-        // 1. Setting OneSignal
+       // 1. Setting OneSignal (DIMATIKAN SEMENTARA AGAR PWA FOKUS)
+        /*
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
@@ -236,6 +237,7 @@
                 notifyButton: { enable: true }, 
             });
         });
+        */
 
         // 2. Injeksi Google Script Iframe
         const gasUrl = "https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec";

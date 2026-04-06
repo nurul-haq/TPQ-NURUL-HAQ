@@ -7,13 +7,8 @@
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#009688">
-    
     <link rel="icon" type="image/png" sizes="192x192" href="./Logo%20192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="./Logo%20512.png">
-    <link rel="apple-touch-icon" href="./Logo%20192.png">
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-
+    
     <style>
         body, html {
             margin: 0;
@@ -21,8 +16,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #009688;
-            font-family: sans-serif;
+            background-color: #009688; /* Warna loading awal */
         }
         iframe {
             width: 100%;
@@ -30,208 +24,27 @@
             border: none;
             display: block;
         }
-
-        /* Desain Banner Install Custom */
-        #installBanner {
-            display: none; 
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            padding: 15px 20px;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-            z-index: 9999;
-            justify-content: space-between;
-            align-items: center;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-sizing: border-box;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .banner-kiri {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .banner-kiri img {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .banner-teks h6 {
-            margin: 0 0 2px 0;
-            font-size: 1rem;
-            color: #064e3b;
-            font-weight: 700;
-        }
-
-        .banner-teks small {
-            margin: 0;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-
-        #btnInstall {
-            background: #009688;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
-        }
-
-        #btnTutupBanner {
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: #f1f5f9;
-            color: #64748b;
-            border: 1px solid #e2e8f0;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
     </style>
 </head>
 <body>
-    <div id="updateToast" style="display:none; position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); color: white; padding: 10px 20px; border-radius: 50px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); align-items: center; gap: 15px; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; animation: slideUp 0.5s ease-out;">
-        <span><i class="fas fa-gift text-warning me-2"></i> Versi Baru Tersedia!</span>
-        <button id="btnUpdateApp" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(16,185,129,0.3);">Perbarui</button>
-    </div>
     
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 20px;">
-    <img src="./Logo%20192.png" alt="Logo" style="width: 130px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-    
-    <h2 style="color: white; margin: 0 0 10px 0; font-size: 24px; font-weight: 800;">TPQ NURUL HAQ</h2>
-    <p style="color: #a7f3d0; margin-bottom: 40px; font-size: 14px;">Sistem Informasi & Pembayaran Terpadu</p>
-    
-    <a href="https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec" 
-       style="background: #ffffff; color: #009688; padding: 16px 36px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s;">
-       🚀 Buka Aplikasi TPQ
-    </a>
-</div>
-
-    <div id="installBanner">
-        <button id="btnTutupBanner" onclick="document.getElementById('installBanner').style.display='none'">×</button>
-        <div class="banner-kiri">
-            <img src="./Logo%20192.png" alt="Logo TPQ">
-            <div class="banner-teks">
-                <h6>TPQ Nurul Haq</h6>
-                <small>Install aplikasi untuk akses cepat</small>
-            </div>
-        </div>
-        <button id="btnInstall">Install</button>
-    </div>
+    <iframe id="appFrame" allow="camera; microphone; fullscreen" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe>
 
     <script>
-      // ==========================================
-      // 1. INJEKSI KE GOOGLE SCRIPT & ANTI-CACHE
-      // ==========================================
-
-      // ==========================================
-      // 2. SETTING ONESIGNAL & TANGKAP PESAN IFRAME
-      // ==========================================
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      // 1. Injeksi Link Google Script & Penghancur Cache
+      const gasUrl = "https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec";
+      const params = window.location.search; 
+      const waktuSekarang = new Date().getTime(); 
+      const finalUrl = gasUrl + (params ? params + "&" : "?") + "refresh=" + waktuSekarang;
       
-      // Inisialisasi OneSignal
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-          serviceWorkerPath: "/TPQ/sw.js", 
-          serviceWorkerParam: { scope: "/TPQ/" },
-          notifyButton: { enable: true },
-        });
+      document.getElementById('appFrame').src = finalUrl;
 
-      // Menerima Sinyal Login dari Iframe (Google Apps Script)
-      window.addEventListener('message', function(event) {
-          // Abaikan pesan jika tidak berkaitan dengan LOGIN_SUKSES
-          if (event.data && event.data.tipe === "LOGIN_SUKSES") {
-              console.log("Sinyal Login Diterima! Jabatan: ", event.data.jabatan);
-              
-              window.OneSignalDeferred.push(function(OneSignal) {
-                  OneSignal.User.addTag("jabatan", event.data.jabatan);
-                  console.log("Tag Jabatan berhasil dipasang: " + event.data.jabatan);
-              });
-          }
-      });
-
-      // ==========================================
-      // 3. SERVICE WORKER & PWA INSTALL BANNER
-      // ==========================================
-      let newWorker;
+      // 2. Pendaftaran Service Worker PWA Dasar
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').then(reg => {
-            reg.addEventListener('updatefound', () => {
-              newWorker = reg.installing;
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  document.getElementById('updateToast').style.display = 'flex';
-                }
-              });
-            });
-          }).catch(err => console.log('Service Worker gagal:', err));
-
-          let refreshing;
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (refreshing) return;
-            refreshing = true;
-            window.location.reload();
-          });
+          navigator.serviceWorker.register('./sw.js').catch(err => console.log('Service Worker gagal:', err));
         });
       }
-
-      document.getElementById('btnUpdateApp').addEventListener('click', () => {
-        if (newWorker) {
-          newWorker.postMessage({action: 'skipWaiting'}); 
-        }
-      });
-
-      let deferredPrompt;
-      const installBanner = document.getElementById('installBanner');
-      const btnInstall = document.getElementById('btnInstall');
-
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBanner.style.display = 'flex';
-      });
-
-      btnInstall.addEventListener('click', async () => {
-        installBanner.style.display = 'none';
-        if(deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Pengguna memilih: ${outcome}`);
-            deferredPrompt = null;
-        }
-      });
-
-      window.addEventListener('appinstalled', () => {
-        installBanner.style.display = 'none';
-        deferredPrompt = null;
-        console.log('Aplikasi TPQ berhasil diinstal di HP!');
-      });
     </script>
 </body>
 </html>

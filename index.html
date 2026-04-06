@@ -158,10 +158,6 @@
           notifyButton: { enable: true },
         });
 
-        // Munculkan Pop-up Notifikasi setelah loading
-        OneSignal.Slidedown.promptPush(); 
-      });
-
       // Menerima Sinyal Login dari Iframe (Google Apps Script)
       window.addEventListener('message', function(event) {
           // Abaikan pesan jika tidak berkaitan dengan LOGIN_SUKSES

@@ -11,7 +11,7 @@
 
     <style>
         /* =========================================
-           1. DESAIN SPLASH SCREEN MODERN
+           1. DESAIN SPLASH SCREEN PROFESIONAL & MODERN (BARU)
            ========================================= */
         #splash-screen {
             position: fixed;
@@ -19,73 +19,147 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Mengganti warna flat dengan gradient yang elegan */
-            background: linear-gradient(135deg, #009688 0%, #004d40 100%);
+            /* Gradien Kompleks & Pola Sublim */
+            background: radial-gradient(circle at center, #009688 0%, #00695c 60%, #004d40 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 20000;
-            /* Transisi saat hilang dibuat lebih mulus */
-            transition: opacity 0.6s cubic-bezier(0.8, 0, 0.2, 1), visibility 0.6s;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+            overflow: hidden;
         }
 
-        /* Animasi Melayang (Floating) untuk Logo */
-        .splash-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 28px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            /* Latar belakang putih agar logo menonjol */
-            background-color: #ffffff;
-            padding: 8px; /* Memberi ruang bernapas untuk logo */
-            animation: float 3s ease-in-out infinite;
-            object-fit: contain;
+        /* Overlay Pola Geometris Islami Halus */
+        #splash-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3%3Cg fill-rule="evenodd"%3%3Cg fill="%23ffffff" fill-opacity="0.03"%3%3Cpath d="M0 0h100v100H0z"/%3%3Cpath d="M50 0L0 50l50 50 50-50L50 0zm0 15.625l34.375 34.375L50 84.375 15.625 50 50 15.625zM0 0h10v10H0V0zm90 0h10v10H90V0zM0 90h10v10H0V90zm90 0h10v10H90V90z"/%3%3C/g%3%3C/g%3%3C/svg%3%3C');
+            background-size: 80px 80px; /* Ukuran pola */
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* Loader Modern (Gaya Titik Bouncing) */
-        .modern-loader {
-            margin-top: 35px;
+        /* Kontainer Utama untuk Elemen */
+        .splash-content {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2; /* Di atas pola overlay */
+            position: relative;
         }
 
-        .modern-loader span {
+        /* Kontainer Logo dengan Halo Halo dan Orbit */
+        .logo-container {
+            position: relative;
+            margin-bottom: 40px; /* Jarak yang lebih baik */
+        }
+
+        /* Bingkai Lingkaran Halo */
+        .logo-frame {
+            width: 140px; /* Sedikit lebih besar */
+            height: 140px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.15), 
+                        inset 0 0 15px rgba(0, 150, 136, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px; /* Ruang bernapas */
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Logo Asli di Dalam Bingkai */
+        .splash-logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 20px; /* Sudut halus */
+            object-fit: contain;
+            /* Hapus box-shadow asli karena sudah ada di bingkai */
+            animation: floatSlow 6s ease-in-out infinite; /* Melayang lebih lambat */
+        }
+
+        /* Animasi Orbit Pemuat (BARU) */
+        .loader-orbit {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: rgba(255, 255, 255, 0.2);
+            border-right-color: rgba(255, 255, 255, 0.1);
+            animation: orbitSpeed 1.5s linear infinite;
+            z-index: 1;
+        }
+
+        /* Titik Bercahaya pada Orbit */
+        .loader-orbit::before {
+            content: '';
+            position: absolute;
+            top: 15px; /* Sesuaikan posisi pada arc */
+            right: 15px;
             width: 10px;
             height: 10px;
             background-color: #ffffff;
             border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
+                        0 0 30px rgba(0, 150, 136, 0.5);
+            animation: pulseGlow 2s ease-in-out infinite;
         }
 
-        .modern-loader span:nth-child(1) { animation-delay: -0.32s; }
-        .modern-loader span:nth-child(2) { animation-delay: -0.16s; }
-
-        /* Teks Loading yang Elegan */
+        /* Teks Pemuat yang Menginspirasi & Ramping */
         .splash-text {
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 20px;
-            font-size: 13px;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            margin-top: 0;
+            font-size: 11px; /* Sedikit lebih kecil, lebih modern */
+            font-family: 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 5px; /* Lebih lebar */
             text-transform: uppercase;
-            animation: pulse-opacity 2s infinite ease-in-out;
+            opacity: 0.8;
+            /* Shimmer Effect BARU */
+            background: linear-gradient(90deg, #ffffff 0%, rgba(255,255,255,0.4) 50%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Teks asli transparan agar shimmer terlihat */
+            animation: shimmerEffect 3s linear infinite, fadeInOut 3s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
-        /* --- KEYFRAMES UNTUK ANIMASI --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        /* --- KEYFRAMES BARU UNTUK ANIMASI YANG LEBIH HALUS --- */
+        @keyframes floatSlow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); } /* Gerakan rotasi halus */
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
+        @keyframes orbitSpeed {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @keyframes pulse-opacity {
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(0, 150, 136, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 50px rgba(0, 150, 136, 0.8); transform: scale(1.1); }
+        }
+
+        @keyframes shimmerEffect {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        @keyframes fadeInOut {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
@@ -95,20 +169,6 @@
             opacity: 0;
             visibility: hidden;
         }
-        
-        /* =========================================
-           2. PENGATURAN DASAR & IFRAME
-           ========================================= */
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #009688;
-            font-family: sans-serif;
-        }
-        
-        iframe {
-            width: 100%; height: 100%; border: none; display: block;
-        }
-
         /* =========================================
            3. BANNER INSTALL
            ========================================= */
@@ -200,13 +260,14 @@
 <body>
 
     <div id="splash-screen">
-        <img src="./logo-192.png" alt="Logo TPQ" class="splash-logo">
-        <div class="modern-loader">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="splash-content">
+            <div class="logo-container">
+                <div class="loader-orbit"></div> <div class="logo-frame">
+                    <img src="./logo-192.png" alt="Logo TPQ" class="splash-logo">
+                </div>
+            </div>
+            <p class="splash-text">Menyiapkan Perjalanan Ilmu...</p>
         </div>
-        <p class="splash-text">MEMUAT DATA</p>
     </div>
     
     <iframe id="appFrame" allow="camera; microphone; fullscreen" sandbox="allow-scripts allow-top-navigation allow-same-origin allow-forms allow-popups"></iframe>

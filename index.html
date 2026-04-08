@@ -76,16 +76,14 @@
             margin-bottom: 40px; /* Jarak yang lebih baik */
         }
 
-       /* Bingkai Lingkaran dengan Efek Kaca Transparan (Glassmorphism) & Emas */
+       /* Bingkai Lingkaran diperbesar menyesuaikan logo (240px) */
         .logo-frame {
-            width: 150px;
-            height: 150px;
+            width: 240px; 
+            height: 240px;
             border-radius: 50%;
-            /* Latar belakang gelap transparan (bukan putih lagi) */
             background: rgba(0, 37, 26, 0.3);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            /* Glow emas yang sangat halus */
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
                         0 0 40px rgba(212, 175, 55, 0.15),
                         inset 0 0 20px rgba(212, 175, 55, 0.1);
@@ -93,48 +91,45 @@
             justify-content: center;
             align-items: center;
             padding: 10px;
-            /* Garis tepi emas tipis */
             border: 1px solid rgba(212, 175, 55, 0.3);
             position: relative;
             z-index: 2;
         }
 
-        /* Logo Asli di Dalam Bingkai */
+        /* Logo Asli diperbesar ke 200px */
         .splash-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%; /* Diubah menjadi 50% agar bulat sempurna */
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
             object-fit: contain;
             animation: floatSlow 6s ease-in-out infinite;
-            /* Menambahkan bayangan langsung pada gambar logo */
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
         }
 
-        /* Animasi Orbit Pemuat Disesuaikan Jadi Warna Emas */
+        /* Animasi Orbit disesuaikan menjadi 250px agar membungkus bingkai */
         .loader-orbit {
             position: absolute;
             top: -5px;
             left: -5px;
-            width: 160px; /* Disesuaikan dengan frame baru */
-            height: 160px;
+            width: 250px; 
+            height: 250px;
             border-radius: 50%;
             border: 2px solid transparent;
-            /* Warna ekor orbit menjadi emas transparan */
             border-top-color: rgba(212, 175, 55, 0.6);
             border-right-color: rgba(212, 175, 55, 0.2);
             animation: orbitSpeed 1.5s linear infinite;
             z-index: 1;
         }
 
-        /* Titik Bercahaya pada Orbit (Emas Menyala) */
+        /* Titik Bercahaya pada Orbit (Posisinya disesuaikan dengan lingkaran 250px) */
         .loader-orbit::before {
             content: '';
             position: absolute;
-            top: 18px;
-            right: 18px;
+            top: 35px; /* Digeser agar tetap menempel di garis lintasan */
+            right: 35px; /* Digeser agar tetap menempel di garis lintasan */
             width: 10px;
             height: 10px;
-            background-color: #fce883; /* Kuning emas terang */
+            background-color: #fce883;
             border-radius: 50%;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.8), 
                         0 0 30px rgba(212, 175, 55, 0.5);

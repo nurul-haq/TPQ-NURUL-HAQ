@@ -6,23 +6,18 @@
     <title>TPQ Nurul Haq</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#009688">
+    <meta name="theme-color" content="#002B24">
     <link rel="icon" type="image/png" sizes="192x192" href="./logo-192.png">
 
     <style>
-       /* =========================================
-           1. DESAIN SPLASH SCREEN KELAS PREMIUM (ANIMATED & LARGE)
+        /* =========================================
+           1. DESAIN SPLASH SCREEN MODERN & ELEGAN
            ========================================= */
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Background Gradien Mengalir (Animated) */
-            background: linear-gradient(135deg, #00332a, #00695c, #004d40, #00251a);
-            background-size: 300% 300%;
-            animation: gradientFlow 12s ease infinite;
+            inset: 0;
+            /* Latar belakang hijau gelap Islami yang solid dan bersih */
+            background-color: #002B24; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -30,208 +25,127 @@
             z-index: 20000;
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
             overflow: hidden;
+            font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
         }
 
-        /* Bias Cahaya Latar yang Berputar Halus */
+        /* Pendaran Cahaya Halus di Latar Belakang */
         #splash-screen::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 45%);
-            animation: lightRotate 25s linear infinite;
-            z-index: 0;
+            width: 150vw;
+            height: 150vw;
+            background: radial-gradient(circle, rgba(0, 150, 136, 0.12) 0%, transparent 60%);
+            animation: pulseGlow 6s ease-in-out infinite alternate;
             pointer-events: none;
         }
 
-        /* Pola Islami Warna Emas (Gold) dengan Efek Bernapas */
-        #splash-screen::after {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            /* SVG Motif Geometris dengan warna Emas (d4af37) */
-            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23d4af37" fill-opacity="0.07"%3E%3Cpath d="M30 0l21.213 8.787L60 30l-8.787 21.213L30 60 8.787 51.213 0 30l8.787-21.213L30 0zm0 15a15 15 0 1 0 0 30 15 15 0 0 0 0-30z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
-            background-size: 100px 100px;
-            animation: patternBreathe 8s ease-in-out infinite;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Kontainer Utama untuk Elemen */
+        /* Kontainer Utama yang muncul dengan transisi halus */
         .splash-content {
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 2; /* Di atas pola overlay */
-            position: relative;
+            /* Animasi masuk meluncur ke atas */
+            animation: slideUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Kontainer Logo - Memberi ruang untuk animasi glow & orbit */
-        .logo-container {
+        /* Kontainer Logo */
+        .logo-wrapper {
             position: relative;
-            margin-bottom: 50px; /* Jarak dijauhkan agar tidak sesak dengan teks */
+            width: 150px;
+            height: 150px;
+            margin-bottom: 35px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* --- DESAIN BINGKAI GANDA (DUAL GLASSMORPHISM) --- */
-        
-        /* Bingkai Luar (Glow Emas & Kaca Transparan) - UKURAN RAKSASA: 280px */
-        .logo-frame-outer {
+        /* Spinner Ring Minimalis Modern */
+        .modern-spinner {
             position: absolute;
-            width: 280px; 
-            height: 280px;
+            inset: -12px;
             border-radius: 50%;
-            background: rgba(0, 37, 26, 0.2);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 0 50px rgba(212, 175, 55, 0.2), 
-                        inset 0 0 30px rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            z-index: 2;
-            animation: pulseOuter 4s ease-in-out infinite;
+            border: 2px solid rgba(212, 175, 55, 0.1);
+            border-top-color: #d4af37; /* Warna Emas */
+            animation: spinRing 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
-        /* Bingkai Dalam (Menopang Logo) - UKURAN: 250px */
-        .logo-frame-inner {
-            width: 250px; 
-            height: 250px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
-                        inset 0 0 15px rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 3; /* Berada di atas bingkai luar */
-            overflow: hidden; /* Memastikan logo yang 'tumpah' terpotong rapi */
-        }
-
-        /* Logo Asli di Dalam Bingkai Dalam - UKURAN: 260px (Sengaja lebih besar untuk efek penuh) */
+        /* Logo Utama */
         .splash-logo {
-            width: 260px;
-            height: 260px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 50%;
-            object-fit: cover; /* Diubah ke cover agar memenuhi seluruh lingkaran */
-            /* Animasi melayang halus */
-            animation: floatSlow 6s ease-in-out infinite;
-            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.6)) contrast(1.1); /* Kontras dinaikkan sedikit agar warna lebih hidup */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            /* Animasi bernapas halus */
+            animation: breatheLogo 3s ease-in-out infinite;
         }
 
-        /* --- ANIMASI ORBIT --- */
-
-        /* Garis Orbit - UKURAN: 310px (Melingkari bingkai luar) */
-        .loader-orbit {
-            position: absolute;
-            /* Memusatkan orbit secara absolut */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 310px; 
-            height: 310px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            /* Warna ekor orbit: Emas terang ke transparan */
-            border-top-color: rgba(212, 175, 55, 0.8);
-            border-right-color: rgba(212, 175, 55, 0.2);
-            z-index: 4; /* Berada paling atas dari susunan cincin */
-            /* Perhatikan: Animasi rotasi sekarang didefinisikan berbeda untuk menjaga centering */
-            animation: orbitSpin 1.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; 
-        }
-
-        /* Titik Emas Bercahaya (The Comet) */
-        .loader-orbit::before {
-            content: '';
-            position: absolute;
-            /* Koordinat ini mengunci titik di lintasan lingkaran 310px */
-            top: 38px; 
-            right: 38px; 
-            width: 14px; /* Sedikit lebih besar */
-            height: 14px;
-            background-color: #ffe066; /* Kuning emas sangat terang */
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 224, 102, 1), 
-                        0 0 40px rgba(212, 175, 55, 0.8),
-                        0 0 60px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Teks Pemuat yang Menginspirasi & Elegan */
-        .splash-text {
+        /* Tipografi Premium */
+        .brand-title {
             color: #ffffff;
-            margin-top: 10px;
-            font-size: 13px; /* Ukuran proporsional dengan logo raksasa */
-            font-family: 'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin: 0 0 6px 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .brand-subtitle {
+            color: #d4af37; /* Warna Emas */
+            font-size: 13px;
             font-weight: 600;
-            letter-spacing: 6px; /* Spasi huruf lebar untuk kesan elegan */
+            letter-spacing: 4px;
+            margin: 0;
             text-transform: uppercase;
             opacity: 0.9;
-            /* Efek Shimmer (Kilau menyapu teks) */
-            background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, #ffffff 50%, rgba(255,255,255,0.5) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmerText 3s linear infinite;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- KUMPULAN KEYFRAMES ANIMASI --- */
-
-        /* 1. Animasi Latar Belakang Gradien */
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Indikator Loading Dots Modern */
+        .loading-dots {
+            margin-top: 50px;
+            display: flex;
+            gap: 8px;
         }
 
-        /* 2. Animasi Cahaya Memutar di Latar */
-        @keyframes lightRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background-color: #009688;
+            border-radius: 50%;
+            animation: bounceDots 1.4s infinite ease-in-out both;
         }
 
-        /* 3. Animasi Pola Islami Bernapas */
-        @keyframes patternBreathe {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-        
-        /* 4. Animasi Logo Melayang Halus */
-        @keyframes floatSlow {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.02); } /* Mengambang naik sambil sedikit membesar */
-            100% { transform: translateY(0px) scale(1); }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        /* --- KUMPULAN ANIMASI --- */
+        @keyframes spinRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* 5. Animasi Denyut Bingkai Luar */
-        @keyframes pulseOuter {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(212, 175, 55, 0.2), inset 0 0 30px rgba(212, 175, 55, 0.15); }
-            50% { transform: scale(1.03); box-shadow: 0 0 60px rgba(212, 175, 55, 0.4), inset 0 0 40px rgba(212, 175, 55, 0.25); }
+        @keyframes breatheLogo {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); }
         }
 
-        /* 6. Animasi Putaran Orbit (Khusus untuk posisi terpusat) */
-        @keyframes orbitSpin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 7. Animasi Teks Shimmer */
-        @keyframes shimmerText {
-            0% { background-position: 200% center; }
-            100% { background-position: -200% center; }
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* Class untuk menyembunyikan splash screen (dikontrol oleh JS) */
+        @keyframes bounceDots {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
         .fade-out {
             opacity: 0;
             visibility: hidden;
@@ -246,7 +160,7 @@
             width: 100%; 
             height: 100%;
             overflow: hidden; 
-            background-color: #f4fdf8; /* Warna fallback */
+            background-color: #f4fdf8;
             font-family: sans-serif;
         }
         
@@ -259,6 +173,7 @@
             border: none; 
             display: block;
             z-index: 1;
+            background-color: #ffffff; /* Mencegah flash transparan */
         }
 
         /* =========================================
@@ -267,25 +182,25 @@
         #installBanner {
             display: none;
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
             padding: 16px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             z-index: 10000;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
-            border: 1px solid rgba(255,255,255,0.3);
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            border: 1px solid rgba(0,0,0,0.05);
+            animation: slideUpBanner 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes bounceIn {
-            0% { transform: translateY(150%) scale(0.8); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
+        @keyframes slideUpBanner {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
         .banner-kiri {
@@ -295,57 +210,59 @@
         }
 
         .banner-kiri img {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,150,136,0.2);
+            box-shadow: 0 4px 10px rgba(0,150,136,0.15);
         }
 
         .banner-teks h6 {
-            margin: 0;
-            font-size: 1.1rem;
+            margin: 0 0 2px 0;
+            font-size: 1.05rem;
             color: #1a202c;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-weight: 700;
         }
 
         .banner-teks small {
             color: #718096;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
         #btnInstall {
-            background: #009688;
+            background: #002B24;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 16px;
-            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         #btnInstall:active {
-            transform: scale(0.9);
+            transform: scale(0.95);
+            background: #004d40;
         }
 
         #btnTutupBanner {
             position: absolute;
-            top: -10px;
-            right: 10px;
-            background: #ff5f57;
-            color: white;
-            border: none;
+            top: -8px;
+            right: -8px;
+            background: #ffffff;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             font-size: 12px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -353,13 +270,19 @@
 
     <div id="splash-screen">
         <div class="splash-content">
-            <div class="logo-container">
-                <div class="loader-orbit"></div> 
-                <div class="logo-frame">
-                    <img src="./logo-192.png" alt="Logo TPQ" class="splash-logo">
-                </div>
+            <div class="logo-wrapper">
+                <div class="modern-spinner"></div> 
+                <img src="./logo-192.png" alt="Logo TPQ" class="splash-logo">
             </div>
-            <p class="splash-text">METODE QUR'ANI SIDOGIRI</p>
+            
+            <h1 class="brand-title">TPQ Nurul Haq</h1>
+            <h2 class="brand-subtitle">Metode Qur'ani Sidogiri</h2>
+            
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
     
@@ -371,41 +294,28 @@
             <img src="./logo-192.png" alt="Logo TPQ">
             <div class="banner-teks">
                 <h6>TPQ Nurul Haq</h6>
-                <small>TAMAN PENDIDIKAN AL-QUR'AN</small>
+                <small>Aplikasi Pendidikan</small>
             </div>
         </div>
-        <button id="btnInstall">PASANG</button>
+        <button id="btnInstall">Install</button>
     </div>
     
     <script>
-       // 1. Setting OneSignal (DIMATIKAN SEMENTARA AGAR PWA FOKUS)
-        /*
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "26d9af55-8916-405f-9c08-fd6910730bc5",
-                serviceWorkerPath: "/TPQ/sw.js", 
-                serviceWorkerParam: { scope: "/TPQ/" },
-                notifyButton: { enable: true }, 
-            });
-        });
-        */
-
-        // 2. Injeksi Google Script Iframe
+        // 1. Injeksi Google Script Iframe
         const gasUrl = "https://script.google.com/macros/s/AKfycbxUkj-y3mppSeFACvJ-MVCELHw7P1VyFaCabxpj8q16UIL-SQaKO8ReoW23OuyuOGaH/exec";
         const params = window.location.search; 
         const waktuSekarang = new Date().getTime(); 
         const finalUrl = gasUrl + (params ? params + "&" : "?") + "refresh=" + waktuSekarang;
         document.getElementById('appFrame').src = finalUrl;
 
-        // 3. Service Worker PWA Dasar
+        // 2. Service Worker PWA Dasar
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log('Service Worker gagal:', err));
             });
         }
 
-        // 4. LOGIKA BANNER INSTALL OTOMATIS
+        // 3. LOGIKA BANNER INSTALL OTOMATIS
         let deferredPrompt;
         const installBanner = document.getElementById('installBanner');
         const btnInstall = document.getElementById('btnInstall');
@@ -432,12 +342,12 @@
             console.log('Aplikasi TPQ berhasil diinstal di HP!');
         });
 
-        // 5. Fungsi Penutup Splash Screen Mulus
+        // 4. Fungsi Penutup Splash Screen Mulus
         const appFrame = document.getElementById('appFrame');
         const splash = document.getElementById('splash-screen');
 
         appFrame.onload = function() {
-            // Memberi waktu tambahan 1.5 detik agar animasi loading sempat dinikmati pengguna
+            // Memberi waktu tambahan 1.5 detik agar animasi loading selesai dinikmati
             setTimeout(() => {
                 splash.classList.add('fade-out');
             }, 1500); 
